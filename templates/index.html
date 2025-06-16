@@ -51,6 +51,39 @@
             100% { filter: drop-shadow(0 0 20px rgba(79, 172, 254, 0.6)); }
         }
 
+        .disclaimer {
+            background: rgba(251, 146, 60, 0.1);
+            border: 1px solid rgba(251, 146, 60, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .disclaimer-icon {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.7; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+
+        .disclaimer p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .disclaimer strong {
+            color: #fb923c;
+            font-weight: 700;
+        }
+
         .form-container {
             margin-bottom: 30px;
         }
@@ -261,6 +294,11 @@
     <div class="container">
         <h1>Should I Buy This Stock Today?</h1>
         
+        <div class="disclaimer">
+            <div class="disclaimer-icon">⚠️</div>
+            <p><strong>Disclaimer:</strong> This is not real financial advice. AI should not make your financial decisions. Always do your own research and consult with a qualified financial advisor before making investment decisions.</p>
+        </div>
+
         <form method="POST" class="form-container">
             <div class="input-group">
                 <input type="text" name="ticker" placeholder="Enter stock ticker (e.g. AAPL)" required>

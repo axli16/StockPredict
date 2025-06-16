@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template
 from joblib import load
 import yfinance as yf
-import pandas as pd
+import os
 
 app = Flask(__name__)
 model = load("stock_model.joblib")
@@ -58,4 +58,5 @@ def home():
     return render_template("index.html", result=result)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(debug=False, host="0.0.0.0", port=port)
