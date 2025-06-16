@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Predictor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        h1 {
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: titleGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            0% { filter: drop-shadow(0 0 5px rgba(79, 172, 254, 0.3)); }
+            100% { filter: drop-shadow(0 0 20px rgba(79, 172, 254, 0.6)); }
+        }
+
+        .form-container {
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            color: #ffffff;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        input[type="text"]:focus {
+            border-color: #4facfe;
+            box-shadow: 0 0 20px rgba(79, 172, 254, 0.3);
+            transform: translateY(-2px);
+        }
+
+        input[type="text"]::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .predict-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .predict-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .predict-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .predict-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .predict-btn:hover::before {
+            left: 100%;
+        }
+
+        .result-container {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 15px;
+            animation: fadeInUp 0.6s ease-out;
+            transition: all 0.3s ease;
+        }
+
+        .result-container.buy {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(22, 163, 74, 0.1));
+            border: 2px solid rgba(34, 197, 94, 0.3);
+            box-shadow: 0 0 30px rgba(34, 197, 94, 0.2);
+        }
+
+        .result-container.dont-buy {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(220, 38, 38, 0.1));
+            border: 2px solid rgba(239, 68, 68, 0.3);
+            box-shadow: 0 0 30px rgba(239, 68, 68, 0.2);
+        }
+
+        .result-container.error {
+            background: linear-gradient(135deg, rgba(251, 146, 60, 0.1), rgba(249, 115, 22, 0.1));
+            border: 2px solid rgba(251, 146, 60, 0.3);
+            box-shadow: 0 0 30px rgba(251, 146, 60, 0.2);
+        }
+
+        .result-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .result-title.buy {
+            color: #22c55e;
+            text-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
+            animation: buyGlow 2s ease-in-out infinite alternate;
+        }
+
+        .result-title.dont-buy {
+            color: #ef4444;
+            text-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+            animation: sellGlow 2s ease-in-out infinite alternate;
+        }
+
+        .result-title.error {
+            color: #fb923c;
+            text-shadow: 0 0 10px rgba(251, 146, 60, 0.5);
+        }
+
+        @keyframes buyGlow {
+            0% { text-shadow: 0 0 10px rgba(34, 197, 94, 0.5); }
+            100% { text-shadow: 0 0 20px rgba(34, 197, 94, 0.8); }
+        }
+
+        @keyframes sellGlow {
+            0% { text-shadow: 0 0 10px rgba(239, 68, 68, 0.5); }
+            100% { text-shadow: 0 0 20px rgba(239, 68, 68, 0.8); }
+        }
+
+        .confidence {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+            margin-top: 10px;
+        }
+
+        .error-message {
+            color: #fb923c;
+            font-size: 1.1rem;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .floating-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(79, 172, 254, 0.3);
+            border-radius: 50%;
+            animation: float 6s infinite ease-in-out;
+        }
+
+        .particle:nth-child(2) { animation-delay: -1s; left: 20%; }
+        .particle:nth-child(3) { animation-delay: -2s; left: 40%; }
+        .particle:nth-child(4) { animation-delay: -3s; left: 60%; }
+        .particle:nth-child(5) { animation-delay: -4s; left: 80%; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10%, 90% { opacity: 1; }
+            50% { transform: translateY(-10vh) rotate(180deg); }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 20px;
+                margin: 10px;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .result-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <div class="container">
+        <h1>Should I Buy This Stock Today?</h1>
+        
+        <form method="POST" class="form-container">
+            <div class="input-group">
+                <input type="text" name="ticker" placeholder="Enter stock ticker (e.g. AAPL)" required>
+            </div>
+            <button type="submit" class="predict-btn">
+                Predict
+            </button>
+        </form>
+
+        {% if result %}
+            {% if result.error %}
+                <div class="result-container error">
+                    <div class="result-title error">⚠️ Error</div>
+                    <p class="error-message">{{ result.error }}</p>
+                </div>
+            {% else %}
+                <div class="result-container {% if result.buy %}buy{% else %}dont-buy{% endif %}">
+                    <div class="result-title {% if result.buy %}buy{% else %}dont-buy{% endif %}">
+                        {{ result.ticker }}: {% if result.buy %}BUY ✅{% else %}DON'T BUY ❌{% endif %}
+                    </div>
+                    <p class="confidence">Confidence: {{ result.confidence }}%</p>
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+
+    <script>
+        // Add some interactive effects
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.querySelector('form');
+            const button = document.querySelector('.predict-btn');
+            
+            form.addEventListener('submit', function() {
+                button.style.transform = 'scale(0.95)';
+                button.innerHTML = 'Analyzing...';
+                
+                setTimeout(() => {
+                    button.style.transform = 'scale(1)';
+                }, 200);
+            });
+
+            // Add ticker input formatting
+            const tickerInput = document.querySelector('input[name="ticker"]');
+            tickerInput.addEventListener('input', function(e) {
+                e.target.value = e.target.value.toUpperCase();
+            });
+        });
+    </script>
+</body>
+</html>
