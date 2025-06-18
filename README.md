@@ -26,3 +26,16 @@ Given a stock ticker (e.g., `AAPL`, `GOOGL`, `TSLA`), the app:
 - **Prediction Target**: Whether the closing price will be higher than the opening price today.
 
 ---
+## 🚀 How to Run
+
+Follow these steps to get the app running locally on your machine.
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/axli16/StockPredict.git
+cd StockPredict
+
+# Run Local host
+python app.py
+```
