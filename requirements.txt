@@ -54,9 +54,7 @@ Pygments==2.19.1
 pyparsing==3.2.3
 PySocks==1.7.1
 python-dateutil==2.9.0.post0
-pywin32==310
 pyzmq==26.4.0
-requests==2.32.4
 scipy==1.15.3
 selenium==4.33.0
 sentencepiece==0.2.0
