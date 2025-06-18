@@ -36,6 +36,10 @@ Follow these steps to get the app running locally on your machine.
 git clone https://github.com/axli16/StockPredict.git
 cd StockPredict
 
+#Train model -> produces a .joblib file that contains your model which is trained on the most recent data.
+git clone https://github.com/rreichel3/US-Stock-Symbols.git
+python train_model.py
+
 # Run Local host
 python app.py
 ```
