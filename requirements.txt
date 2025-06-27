@@ -37,7 +37,7 @@ MarkupSafe==3.0.2
 matplotlib-inline==0.1.7
 
 nest-asyncio==1.6.0
-
+os
 opencv-contrib-python==4.11.0.86
 opencv-python==4.11.0.86
 opt_einsum==3.4.0
@@ -75,3 +75,4 @@ wcwidth==0.2.13
 websocket-client==1.8.0
 Werkzeug==3.1.3
 wsproto==1.2.0
+yfinance
